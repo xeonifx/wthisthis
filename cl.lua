@@ -114,7 +114,7 @@ local aa4 = 0
                         v.CFrame = HRP.CFrame
                     end
                 end
-                wait()
+                wait(0.1)
             end
         end)
     end
