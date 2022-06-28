@@ -109,12 +109,12 @@ local aa4 = 0
         spawn(function()
             while getgenv().autoMats == true do
                 for i,v in pairs(game:GetService("Workspace").MaterialGivers:GetDescendants()) do
-                    wait()
                     if v.Name == "Giver" then
                         local HRP = game.Players.LocalPlayer.Character.HumanoidRootPart
                         v.CFrame = HRP.CFrame
                     end
                 end
+                wait()
             end
         end)
     end
