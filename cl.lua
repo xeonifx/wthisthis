@@ -195,7 +195,7 @@ local aa4 = 0
                                         Text = "I'm here still, if you need me of course.", -- Required
                                     })
 
-                                    wait(60)
+                                    wait(240)
 
                                     esp:Destroy()
 
