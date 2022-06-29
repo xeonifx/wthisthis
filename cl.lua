@@ -1,5 +1,5 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("Shitty GUI, scripts made by plezdonthurtme", "Synapse")
+local Window = Library.CreateLib("Shitty GUI, scripts made by plezdonthurtme on v3rmillion", "Synapse")
 
 --VARIABLES
 local a1 = 0
