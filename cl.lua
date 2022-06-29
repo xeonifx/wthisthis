@@ -427,6 +427,12 @@ local aa4 = 0
         HRP.CFrame = game:GetService("Workspace").Spawns.Two.CFrame
     end)
 
+    NPCSection:NewButton("Blacksmith NPC", "", function()
+        local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
+        
+        HRP.CFrame = CFrame.new(5626.3584, 89.6270065, -8174.3623, -0.657170177, 1.52678989e-08, -0.753742218, 3.55675267e-09, 1, 1.71550774e-08, 0.753742218, 8.59293081e-09, -0.657170177)
+    end)
+
     NPCSection:NewButton("Challenging the Challenger NPC", "", function()
         local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
         
