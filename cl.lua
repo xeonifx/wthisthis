@@ -29,9 +29,72 @@ if game.PlaceId == 8619263259 then
     local ZoneSection = Main:NewSection("Zones(Mostly Spawns)")
     local QuestSection = Main:NewSection("Quests")
     local EnemiesSection = Main:NewSection("Bosses(Use In Private Servers for saftey)")
+    local NPCSection = Main:NewSection("NPCs")
+    local ShopSection = Main:NewSection("All Shop Items")
 
+    -- Buttons For Updating
+
+
+    -- Code for other stuff cuz I'm lazy
+    
+    
+    if 1==1 then
+        for i,v in pairs(game:GetService("Workspace").Stalls:GetDescendants()) do
+            if v:IsA("NumberValue") and v.Name == "Cost" then
+                if v.Parent.Parent.Parent.Parent.Name == "Black Market" then
+                
+                else
+                    ShopSection:NewButton(v.Parent.Name.."("..v.Value.."g)", "", function()
+                        local args = {
+                            [1] = "Buy1",
+                            [2] = workspace.Stalls:FindFirstChild(v.Parent.Parent.Parent.Parent.Name):FindFirstChild(v.Parent.Parent.Parent.Name).Shop:FindFirstChild(v.Parent.Name)
+                        }
+
+                        game:GetService("ReplicatedStorage").Remotes.Effected:FireServer(unpack(args))
+                    end)
+                end
+            end
+        end
+    end
+    
+    workspace.Stalls["Black Market"].ChildAdded:Connect(function(child)
+        if string.match(child.Name, 'Grani') then
+            local BMitems = Main:NewSection("Black Market Items")
+
+            game:GetService("StarterGui"):SetCore("SendNotification",{
+                Title = "Black Market Dealer", -- Required
+                Text = "Check the Black Market Items Section in the GUI(Scroll down to bottom).", -- Required
+            })
+            
+            wait(0.5)
+            
+            for i,v in pairs(game:GetService("Workspace").Stalls["Black Market"]:GetDescendants()) do
+                if v:IsA("NumberValue") and v.Name == "Cost" then
+                    BMitems:NewButton(v.Parent.Name.."("..v.Value.."g)", "", function()
+                        local args = {
+                            [1] = "Buy1",
+                            [2] = workspace.Stalls:FindFirstChild(v.Parent.Parent.Parent.Parent.Name):FindFirstChild(v.Parent.Parent.Parent.Name).Shop:FindFirstChild(v.Parent.Name)
+                        }
+    
+                        game:GetService("ReplicatedStorage").Remotes.Effected:FireServer(unpack(args))
+                    end)
+                end
+            end
+        end
+    end)
+
+    workspace.Stalls["Black Market"].ChildRemoved:Connect(function(child)
+        for i,v in pairs(game.CoreGui:GetDescendants()) do
+            if v:IsA("TextLabel") and v.Text == "Black Market Items" then
+                v.Parent.Parent:Destroy()
+            end
+        end
+    end)
+
+    
     --TOGGLES
 
+    
     AutoSection:NewToggle("Some stuff can get buggy if you die", "This Does Nothing", function(state) --Edited by Me from another edited code by Hamstir on v3rmillion
 
     end)
@@ -53,35 +116,6 @@ local aa4 = 0
         getgenv().AutoBlackMarketESP = state
         if state then
         BMesp();
-        workspace.Stalls["Black Market"].ChildAdded:Connect(function(child)
-             if string.match(child.Name, 'Grani') then
-                BMesp();
-
-                if aa3 == 0 then
-                    aa3 = 1
-                    game:GetService("StarterGui"):SetCore("SendNotification",{
-                        Title = "Black Market Dealer", -- Required
-                        Text = "Press f9 to see the items.", -- Required
-                    })
-                    
-                    wait(1)
-
-                    for i,v in pairs(game:GetService("Workspace").Stalls["Black Market"].Grani.Shop:GetDescendants()) do
-                        if v:IsA("MeshPart") then
-                            print(v)
-                        end
-                    end
-
-                    wait(5)
-                    aa3 = 0
-                else
-
-                end
-             end
-         end)
-         workspace.Stalls["Black Market"].ChildRemoved:Connect(function(child)
-            a1 = 0
-        end)
         end
      end)
 
@@ -109,12 +143,12 @@ local aa4 = 0
         spawn(function()
             while getgenv().autoMats == true do
                 for i,v in pairs(game:GetService("Workspace").MaterialGivers:GetDescendants()) do
+                    wait(0.2)
                     if v.Name == "Giver" then
                         local HRP = game.Players.LocalPlayer.Character.HumanoidRootPart
                         v.CFrame = HRP.CFrame
                     end
                 end
-                wait(0.1)
             end
         end)
     end
@@ -184,18 +218,7 @@ local aa4 = 0
                                     esp1.TextColor3 = Color3.new(0, 1, 0)
                                     esp1.TextScaled = true
 
-                                    for i,v in pairs(game:GetService("Workspace").Stalls["Black Market"].Grani.Shop:GetDescendants()) do
-                                        if v:IsA("MeshPart") then
-                                            print(v)
-                                        end
-                                    end
-
-                                    game:GetService("StarterGui"):SetCore("SendNotification",{
-                                        Title = "Black Market Dealer", -- Required
-                                        Text = "I'm here still, if you need me of course.", -- Required
-                                    })
-
-                                    wait(240)
+                                    wait(60)
 
                                     esp:Destroy()
 
@@ -222,7 +245,7 @@ local aa4 = 0
 
         HRP.CFrame = game:GetService("Workspace").Stalls["Black Market"].Grani.Shop.booth.CFrame
     end)
-    
+
     TeleportSection:NewButton("Arsenal TP", "Teleports you to trading arsenal.", function()
         local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
 
@@ -404,77 +427,189 @@ local aa4 = 0
         HRP.CFrame = game:GetService("Workspace").Spawns.Two.CFrame
     end)
 
-    QuestSection:NewButton("Challenging the Challenger Quest", "", function()
+    NPCSection:NewButton("Challenging the Challenger NPC", "", function()
         local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
         
         HRP.CFrame = game:GetService("Workspace").QuestNPCs["Challenging the Challenger"].Head.CFrame
     end)
 
-    QuestSection:NewButton("Foxes Saga Quest", "", function()
+    NPCSection:NewButton("Foxes Saga NPC", "", function()
         local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
         
         HRP.CFrame = game:GetService("Workspace").QuestNPCs["Foxes Saga"].Head.CFrame
     end)
 
-    QuestSection:NewButton("Foxes and Slimes Quest", "5M Gold Coins???", function()
+    NPCSection:NewButton("Foxes and Slimes NPC", "5M Gold Coins???", function()
         local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
         
         HRP.CFrame = game:GetService("Workspace").QuestNPCs["Foxes and Slimes"].Head.CFrame
     end)
 
-    QuestSection:NewButton("Get down here! Quest", "No, I don't think I will.", function()
+    NPCSection:NewButton("Get down here! NPC", "No, I don't think I will.", function()
         local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
         
         HRP.CFrame = game:GetService("Workspace").QuestNPCs["Get down here!"].Head.CFrame
     end)
 
-    QuestSection:NewButton("Hell so Hot Quest", "Heaven so Cold", function()
+    NPCSection:NewButton("Hell so Hot NPC", "Heaven so Cold", function()
         local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
         
         HRP.CFrame = game:GetService("Workspace").QuestNPCs["Hell so Hot"].Head.CFrame
     end)
 
-    QuestSection:NewButton("Honey Collector Quest", "Be careful of killer bees", function()
+    NPCSection:NewButton("Honey Collector NPC", "Be careful of killer bees", function()
         local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
         
         HRP.CFrame = game:GetService("Workspace").QuestNPCs["Honey Collector"].Head.CFrame
     end)
 
-    QuestSection:NewButton("Monster Hunter Quest", "Monster Hunter Rise", function()
+    NPCSection:NewButton("Monster Hunter NPC", "Monster Hunter Rise", function()
         local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
         
         HRP.CFrame = game:GetService("Workspace").QuestNPCs["Monster Hunter"].Head.CFrame
     end)
 
-    QuestSection:NewButton("Rageblade Quest", "L + Ratio + Stay Mad + Fatherless", function()
+    NPCSection:NewButton("Rageblade NPC", "L + Ratio + Stay Mad + Fatherless", function()
         local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
         
         HRP.CFrame = game:GetService("Workspace").QuestNPCs.Rageblade.Main.CFrame
     end)
 
-    QuestSection:NewButton("Samurai Island Quest", "don't know", function()
+    NPCSection:NewButton("Samurai Island NPC", "don't know", function()
         local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
         
         HRP.CFrame = game:GetService("Workspace").QuestNPCs["Samurai Island Quest"].Head.CFrame
     end)
 
-    QuestSection:NewButton("Slimy Situation Quest", "U-ummm...", function()
+    NPCSection:NewButton("Slimy Situation NPC", "U-ummm...", function()
         local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
         
         HRP.CFrame = game:GetService("Workspace").QuestNPCs["Slimy Situation"].Head.CFrame
     end)
 
-    QuestSection:NewButton("Tusk's Revenge Quest", "Vengeful spirit", function()
+    NPCSection:NewButton("Tusk's Revenge NPC", "Vengeful spirit", function()
         local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
         
         HRP.CFrame = game:GetService("Workspace").QuestNPCs["Tusk's Revenge"].Head.CFrame
     end)
 
-    QuestSection:NewButton("Voidvorn Drills Quest", "Gurren Lagann", function()
+    NPCSection:NewButton("Voidvorn Drills NPC", "Gurren Lagann", function()
         local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
         
         HRP.CFrame = game:GetService("Workspace").QuestNPCs["Voidborn Drills"].Main.CFrame
     end)
+
+    -- Section Start
+
+    QuestSection:NewButton("Challenging the Challenger Quest", "", function()
+        local args = {
+            [1] = "MainAction",
+            [2] = workspace.QuestNPCs:FindFirstChild("Challenging the Challenger")
+        }
+
+        workspace.QuestNPCs.Main.onClick:FireServer(unpack(args))
+    end)
+
+    QuestSection:NewButton("Foxes Saga Quest", "", function()
+        local args = {
+            [1] = "MainAction",
+            [2] = workspace.QuestNPCs:FindFirstChild("Foxes Saga")
+        }
+
+        workspace.QuestNPCs.Main.onClick:FireServer(unpack(args))
+    end)
+
+    QuestSection:NewButton("Foxes and Slimes Quest", "5M Gold Coins???", function()
+        local args = {
+            [1] = "MainAction",
+            [2] = workspace.QuestNPCs:FindFirstChild("Foxes and Slimes")
+        }
+
+        workspace.QuestNPCs.Main.onClick:FireServer(unpack(args))
+    end)
+
+    QuestSection:NewButton("Get down here! Quest", "No, I don't think I will.", function()
+        local args = {
+            [1] = "MainAction",
+            [2] = workspace.QuestNPCs:FindFirstChild("Get down here!")
+        }
+
+        workspace.QuestNPCs.Main.onClick:FireServer(unpack(args))
+    end)
+
+    QuestSection:NewButton("Hell so Hot Quest", "Heaven so Cold", function()
+        local args = {
+            [1] = "MainAction",
+            [2] = workspace.QuestNPCs:FindFirstChild("Hell so Hot")
+        }
+
+        workspace.QuestNPCs.Main.onClick:FireServer(unpack(args))
+    end)
+
+    QuestSection:NewButton("Honey Collector Quest", "Be careful of killer bees", function()
+        local args = {
+            [1] = "MainAction",
+            [2] = workspace.QuestNPCs:FindFirstChild("Honey Collector")
+        }
+
+        workspace.QuestNPCs.Main.onClick:FireServer(unpack(args))
+    end)
+
+    QuestSection:NewButton("Monster Hunter Quest", "Monster Hunter Rise", function()
+        local args = {
+            [1] = "MainAction",
+            [2] = workspace.QuestNPCs:FindFirstChild("Monster Hunter")
+        }
+
+        workspace.QuestNPCs.Main.onClick:FireServer(unpack(args))
+    end)
+
+    QuestSection:NewButton("Rageblade Quest", "L + Ratio + Stay Mad + Fatherless", function()
+        local args = {
+            [1] = "MainAction",
+            [2] = workspace.QuestNPCs:FindFirstChild("Rageblade")
+        }
+
+        workspace.QuestNPCs.Main.onClick:FireServer(unpack(args))
+    end)
+
+    QuestSection:NewButton("Samurai Island Quest", "don't know", function()
+        local args = {
+            [1] = "MainAction",
+            [2] = workspace.QuestNPCs:FindFirstChild("Samurai Island Quest")
+        }
+
+        workspace.QuestNPCs.Main.onClick:FireServer(unpack(args))
+    end)
+
+    QuestSection:NewButton("Slimy Situation Quest", "U-ummm...", function()
+        local args = {
+            [1] = "MainAction",
+            [2] = workspace.QuestNPCs:FindFirstChild("Slimy Situation")
+        }
+
+        workspace.QuestNPCs.Main.onClick:FireServer(unpack(args))
+    end)
+
+    QuestSection:NewButton("Tusk's Revenge Quest", "Vengeful spirit", function()
+        local args = {
+            [1] = "MainAction",
+            [2] = workspace.QuestNPCs:FindFirstChild("Tusk's Revenge")
+        }
+
+        workspace.QuestNPCs.Main.onClick:FireServer(unpack(args))
+    end)
+
+    QuestSection:NewButton("Voidborn Drills Quest", "Gurren Lagann", function()
+        local args = {
+            [1] = "MainAction",
+            [2] = workspace.QuestNPCs:FindFirstChild("Voidborn Drills")
+        }
+
+        workspace.QuestNPCs.Main.onClick:FireServer(unpack(args))
+    end)
+
+    -- Section End
 
     EnemiesSection:NewButton("Oni", "God He's Scary.", function()
         local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
@@ -596,6 +731,19 @@ local aa4 = 0
         HRP.CFrame = game:GetService("Workspace").Enemies["Heart Crystal"].Enemy.EnemyLocation.CFrame
     end)
 
+    NPCSection:NewButton("Martial Artist NPC", "Dude Who Gives Martialist.", function()
+        local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
+        
+        HRP.CFrame = CFrame.new(-1296.29114, 226.999954, -782.216248, -0.999449909, -4.58875826e-09, -0.0331651606, -7.28118632e-09, 1, 8.10616498e-08, 0.0331651606, 8.12585412e-08, -0.9994499091)
+
+    end)
+
+    NPCSection:NewButton("Martial Artist NPC 2", "Dude Who upgrades Martialist.", function()
+        local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
+        
+        HRP.CFrame = CFrame.new(-2227.19897, 742.916565, -136.004929, -0.973652363, 8.97628372e-09, -0.228037506, -9.15434217e-09, 1, 7.844951e-08, 0.228037506, 7.84700802e-08, -0.973652363)
+
+    end)
 
 else
     -- IF THIS ISN'T THE GAME THEN IT WON'T LOAD THESE TOGGLES, BUTTONS, ETC.
@@ -603,101 +751,34 @@ end
 
 --BUTTONS FOR ANY GAME
 local positionSection = AnyGame:NewSection("Positions")
+local pos1
+local pos2
+local pos3
+
+
 
 positionSection:NewButton("Save Position", "Saves your position.", function()
-        
-    if game:GetService("Workspace"):FindFirstChild("TP") then
-        
-        game:GetService("Workspace"):FindFirstChild("TP"):Destroy()
-        
-        local part = Instance.new("Part")
-        part.Name = "TP"
-        part.Parent = game:GetService("Workspace")
-        part.CanCollide = false
-        part.CFrame = HRP.CFrame
-        part.Anchored = true
-        part.Size = Vector3.new(1,1,1)
-        part.Transparency = 1
-    else
-        local part = Instance.new("Part")
-        part.Name = "TP"
-        part.Parent = game:GetService("Workspace")
-        part.CanCollide = false
-        part.CFrame = HRP.CFrame
-        part.Anchored = true
-        part.Size = Vector3.new(1,1,1)
-        part.Transparency = 1 
-    end
+    pos1 = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
 end)
 
 positionSection:NewButton("Load Position", "Loads Saved Position.", function()
-    local tp = game:GetService("Workspace"):FindFirstChild("TP")
-        
-    HRP.CFrame = tp.CFrame
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = pos1
 end)
 
 
 positionSection:NewButton("Save Position 2", "Saves your position.", function()
-        
-    if game:GetService("Workspace"):FindFirstChild("TP2") then
-        
-        game:GetService("Workspace"):FindFirstChild("TP2"):Destroy()
-        
-        local part = Instance.new("Part")
-        part.Name = "TP2"
-        part.Parent = game:GetService("Workspace")
-        part.CanCollide = false
-        part.CFrame = HRP.CFrame
-        part.Anchored = true
-        part.Size = Vector3.new(1,1,1)
-        part.Transparency = 1
-    else
-        local part = Instance.new("Part")
-        part.Name = "TP2"
-        part.Parent = game:GetService("Workspace")
-        part.CanCollide = false
-        part.CFrame = HRP.CFrame
-        part.Anchored = true
-        part.Size = Vector3.new(1,1,1)
-        part.Transparency = 1 
-    end
+    pos2 = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
 end)
 
 positionSection:NewButton("Load Position 2", "Loads Saved Position.", function()
-    local tp = game:GetService("Workspace"):FindFirstChild("TP2")
-        
-    HRP.CFrame = tp.CFrame
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = pos2
 end)
 
 
 positionSection:NewButton("Save Position 3", "Saves your position.", function()
-        
-    if game:GetService("Workspace"):FindFirstChild("TP3") then
-        
-        game:GetService("Workspace"):FindFirstChild("TP3"):Destroy()
-        
-        local part = Instance.new("Part")
-        part.Name = "TP3"
-        part.Parent = game:GetService("Workspace")
-        part.CanCollide = false
-        part.CFrame = HRP.CFrame
-        part.Anchored = true
-        part.Size = Vector3.new(1,1,1)
-        part.Transparency = 1
-    else
-        local part = Instance.new("Part")
-        part.Name = "TP3"
-        part.Parent = game:GetService("Workspace")
-        part.CanCollide = false
-        part.CFrame = HRP.CFrame
-        part.Anchored = true
-        part.Size = Vector3.new(1,1,1)
-        part.Transparency = 1 
-    end
+    pos3 = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
 end)
 
 positionSection:NewButton("Load Position 3", "Loads Saved Position.", function()
-    local tp = game:GetService("Workspace"):FindFirstChild("TP3")
-        
-    HRP.CFrame = tp.CFrame
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = pos3
 end)
