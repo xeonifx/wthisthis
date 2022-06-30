@@ -1,5 +1,5 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("Shitty GUI, scripts made by plezdonthurtme on v3rmillion", "Synapse")
+local Window = Library.CreateLib("Alright GUI, scripts made by plezdonthurtme on v3rmillion", "Synapse")
 
 --VARIABLES
 local a1 = 0
@@ -11,6 +11,7 @@ getgenv().autoMats = true;
 getgenv().GodMode = true;
 getgenv().AutoMeteorite = true;
 getgenv().AutoBlackMarketESP = true;
+getgenv().AutoSkin = true;
 
 --FUNCTIONS
 
@@ -59,25 +60,28 @@ if game.PlaceId == 8619263259 then
     
     workspace.Stalls["Black Market"].ChildAdded:Connect(function(child)
         if string.match(child.Name, 'Grani') then
-            local BMitems = Main:NewSection("Black Market Items")
-
-            game:GetService("StarterGui"):SetCore("SendNotification",{
-                Title = "Black Market Dealer", -- Required
-                Text = "Check the Black Market Items Section in the GUI(Scroll down to bottom).", -- Required
-            })
+            local BMitems = Main:NewSection("Black Market Items")      
+            for i,v in pairs(game:GetService("CoreGui"):GetDescendants()) do
+                if v:IsA("TextButton") and v.Text == "Main" and v.Name == "MainTabButton" then
+                    game:GetService("StarterGui"):SetCore("SendNotification",{
+                        Title = "Black Market Dealer", -- Required
+                        Text = "Check the Black Market Items Section in the GUI(Scroll down to bottom).", -- Required
+                    })
+                    
+                    wait(0.5)
+                    
+                    for i,v in pairs(game:GetService("Workspace").Stalls["Black Market"]:GetDescendants()) do
+                        if v:IsA("NumberValue") and v.Name == "Cost" then
+                            BMitems:NewButton(v.Parent.Name.."("..v.Value.."g)", "", function()
+                                local args = {
+                                    [1] = "Buy1",
+                                    [2] = workspace.Stalls:FindFirstChild(v.Parent.Parent.Parent.Parent.Name):FindFirstChild(v.Parent.Parent.Parent.Name).Shop:FindFirstChild(v.Parent.Name)
+                                }
             
-            wait(0.5)
-            
-            for i,v in pairs(game:GetService("Workspace").Stalls["Black Market"]:GetDescendants()) do
-                if v:IsA("NumberValue") and v.Name == "Cost" then
-                    BMitems:NewButton(v.Parent.Name.."("..v.Value.."g)", "", function()
-                        local args = {
-                            [1] = "Buy1",
-                            [2] = workspace.Stalls:FindFirstChild(v.Parent.Parent.Parent.Parent.Name):FindFirstChild(v.Parent.Parent.Parent.Name).Shop:FindFirstChild(v.Parent.Name)
-                        }
-    
-                        game:GetService("ReplicatedStorage").Remotes.Effected:FireServer(unpack(args))
-                    end)
+                                game:GetService("ReplicatedStorage").Remotes.Effected:FireServer(unpack(args))
+                            end)
+                        end
+                    end
                 end
             end
         end
@@ -138,17 +142,51 @@ local aa4 = 0
         end
     end)
 
+    AutoSection:NewToggle("Auto Skin", "Gotta be near monkey dude.", function(state)
+        getgenv().AutoSkin = state
+        if state then
+            fireproximityprompt(game:GetService("Workspace").Stalls.SkinShop.Monkey.HumanoidRootPart.Attachment.ProximityPrompt, 1, true)
+            Skins();
+        end
+    end)
+
+    function fireproximityprompt(Obj, Amount, Skip) -- Sowd0404 proximpy script
+        if Obj.ClassName == "ProximityPrompt" then 
+            Amount = Amount or 1
+            local PromptTime = Obj.HoldDuration
+            if Skip then 
+                Obj.HoldDuration = 0
+            end
+            for i = 1, Amount do 
+                Obj:InputHoldBegin()
+                if not Skip then 
+                    wait(Obj.HoldDuration)
+                end
+                Obj:InputHoldEnd()
+            end
+            Obj.HoldDuration = PromptTime
+        else 
+
+        end
+
+        wait(1)
+
+        game:GetService("Players").LocalPlayer.PlayerGui.UI.Accept.RemoteEvent:FireServer()
+        
+        wait()
+    end
+
     function TouchMats()
         local Player = game.Players.LocalPlayer
         spawn(function()
             while getgenv().autoMats == true do
                 for i,v in pairs(game:GetService("Workspace").MaterialGivers:GetDescendants()) do
-                    wait(0.2)
                     if v.Name == "Giver" then
                         local HRP = game.Players.LocalPlayer.Character.HumanoidRootPart
                         v.CFrame = HRP.CFrame
                     end
                 end
+                wait()
             end
         end)
     end
@@ -231,6 +269,22 @@ local aa4 = 0
             end
         end)
     end
+
+    function Skins()
+        local Player = game.Players.LocalPlayer
+        spawn(function()
+            while getgenv().AutoSkin == true do
+                workspace.ChildRemoved:Connect(function(child)
+                    if child.Name == "ToTween" and getgenv().AutoSkin == true then
+                        wait(1)
+                        fireproximityprompt(game:GetService("Workspace").Stalls.SkinShop.Monkey.HumanoidRootPart.Attachment.ProximityPrompt, 1, true)
+                    end
+                end)
+                wait()
+            end
+        end)
+    end
+    
     
 
     --BUTTONS
@@ -415,6 +469,13 @@ local aa4 = 0
 
     end)
 
+    ZoneSection:NewButton("Hell Cave", "Hell Bats", function()
+        local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
+        
+        HRP.CFrame = CFrame.new(-2533.48901, -157.000046, 3172.72632, 0.082250461, -3.42684707e-08, -0.996611714, -3.68725388e-08, 1, -3.74280731e-08, 0.996611714, 3.98260767e-08, 0.082250461)
+
+    end)
+
     ZoneSection:NewButton("Punky Sky", "Yea, seems a lot like....", function()
         local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
         
@@ -425,6 +486,12 @@ local aa4 = 0
         local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
         
         HRP.CFrame = game:GetService("Workspace").Spawns.Two.CFrame
+    end)   
+
+    NPCSection:NewButton("Craight the Monkey NPC", "", function()
+        local HRP = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
+        
+        HRP.CFrame = CFrame.new(2128.40967, 406.999969, 3148.48975, -0.169384688, 0, 0.985549986, 0, 1, 0, -0.985549986, 0, -0.169384688)
     end)
 
     NPCSection:NewButton("Blacksmith NPC", "", function()
