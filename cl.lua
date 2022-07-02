@@ -99,11 +99,11 @@ if game.PlaceId == 8619263259 then
     --TOGGLES
 
     
-    AutoSection:NewToggle("Some stuff can get buggy if you die", "This Does Nothing", function(state) --Edited by Me from another edited code by Hamstir on v3rmillion
+    AutoSection:NewToggle("Some stuff can get buggy if you die", "This Does Nothing", function(state) 
 
     end)
 
-    AutoSection:NewToggle("Auto Orbs", "Auto teleports Orbs to you(Buggy).", function(state) --Edited by Me from another edited code by Hamstir on v3rmillion
+    AutoSection:NewToggle("Auto Orbs", "Auto teleports Orbs to you(Buggy).", function(state) 
        getgenv().autoOrb = state
        if state then
        TouchOrb();
@@ -116,14 +116,14 @@ if game.PlaceId == 8619263259 then
     end)
 local aa3 = 0
 local aa4 = 0
-    AutoSection:NewToggle("Auto BM ESP", "Puts an ESP on BM when spawned", function(state) --Edited by Me from another edited code by Hamstir on v3rmillion
+    AutoSection:NewToggle("Auto BM ESP", "Puts an ESP on BM when spawned", function(state) 
         getgenv().AutoBlackMarketESP = state
         if state then
         BMesp();
         end
      end)
 
-    AutoSection:NewToggle("God Mode(Read Description, 3 dots ----->)", "Activate when in battles, disable after(Very Buggy).", function(state) --Edited by Me from another edited code by Hamstir on v3rmillion
+    AutoSection:NewToggle("God Mode(Read Description, 3 dots ----->)", "Activate when in battles, disable after(Very Buggy).", function(state)
         getgenv().GodMode = state
         if state then
         GodMode();
